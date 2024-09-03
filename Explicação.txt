@@ -1,2 +1,3 @@
 Esse é um software livre, e apenas para teste de um siples universitário
 ;)
+Esse software por enquanto só trabalha no lado do servidor, mas em breve com novos updates vai ser hospedado junto com toda a integração
