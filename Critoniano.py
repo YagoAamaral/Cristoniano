@@ -2,7 +2,7 @@ import sys
 import subprocess
 import random
 import sqlite3
-from pynotifier import Notification
+from pynotifier import notification
 from PySide6 import QtCore, QtWidgets, QtGui
 from PySide6.QtCore import QPropertyAnimation
 
@@ -29,10 +29,10 @@ class SuPage(QtWidgets.QWidget):  # Nova página
         self.notify_button.clicked.connect(lambda: self.show_notification(nome))
 
     def show_notification(self, nome):
-        Notification(
+        notification(
             title='Cadastro realizado',
             description=f'O nome {nome} foi salvo com sucesso!',
-            icon_path='',  # Se houver um ícone, especifique o caminho aqui
+            icon_path='',  
             duration=10  # Duração da notificação em segundos
         ).send()
 
@@ -141,7 +141,7 @@ class MyWidget(QtWidgets.QWidget):  # Classe do aplicativo principal
 
     @QtCore.Slot()
     def save_name(self):
-        nome = self.input.text().strip()  # Remover espaços em branco
+        nome = self.input.text().strip()  
         try:
             if nome:
                 self.cursor.execute("INSERT INTO nomes (nome) VALUES (?)", (nome,))
