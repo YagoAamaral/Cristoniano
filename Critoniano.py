@@ -2,11 +2,12 @@ import sys
 import subprocess
 import random
 import sqlite3
+from pynotifier import Notification
 from PySide6 import QtCore, QtWidgets, QtGui
 from PySide6.QtCore import QPropertyAnimation
 
-print("verificando dependências....")
-# Tentar importar o PySide6 e instalar automaticamente se não estiver disponível
+print("Verificando dependências....")
+# Tentar instalar PySide6 automaticamente se não estiver disponível
 try:
     from PySide6 import QtCore, QtWidgets, QtGui
 except ImportError:
@@ -14,16 +15,28 @@ except ImportError:
     from PySide6 import QtCore, QtWidgets, QtGui
 
 class SuPage(QtWidgets.QWidget):  # Nova página
-    def __init__(self):
+    def __init__(self, nome):  # Aceitar o nome como parâmetro
         super().__init__()
-        self.label = QtWidgets.QLabel("Nome salvo com sucesso.....!", alignment=QtCore.Qt.AlignCenter)
-        #self.label = QtWidgets.QLabel("carregando conteudo....", alignment=QtCore.Qt.alignleft )
+        self.label = QtWidgets.QLabel(f"Nome '{nome}' salvo com sucesso!", alignment=QtCore.Qt.AlignCenter)
         self.label.setStyleSheet("font-size: 30px; font-weight: bold; color: black;")
         self.setStyleSheet("background-color: white;")
         layout = QtWidgets.QVBoxLayout(self)
         layout.addWidget(self.label)
 
-class MyWidget(QtWidgets.QWidget):  # Classe do aplicativo
+        # Botão de notificação
+        self.notify_button = QtWidgets.QPushButton("Mostrar notificação")
+        layout.addWidget(self.notify_button)
+        self.notify_button.clicked.connect(lambda: self.show_notification(nome))
+
+    def show_notification(self, nome):
+        Notification(
+            title='Cadastro realizado',
+            description=f'O nome {nome} foi salvo com sucesso!',
+            icon_path='',  # Se houver um ícone, especifique o caminho aqui
+            duration=10  # Duração da notificação em segundos
+        ).send()
+
+class MyWidget(QtWidgets.QWidget):  # Classe do aplicativo principal
     def __init__(self):
         super().__init__()
 
@@ -39,7 +52,6 @@ class MyWidget(QtWidgets.QWidget):  # Classe do aplicativo
         self.input.setPlaceholderText("Digite apenas seu primeiro nome")
         self.button_save = QtWidgets.QPushButton("Salvar Nome")
         self.button = QtWidgets.QPushButton("Click aqui! para continuar")  # Botão para começar
-        
         self.button.setVisible(True)
         self.next = QtWidgets.QPushButton("Click aqui")
         self.next.setVisible(False)
@@ -137,7 +149,7 @@ class MyWidget(QtWidgets.QWidget):  # Classe do aplicativo
                 self.text.setText(f"Nome '{nome}' foi salvo!")
                 self.input.clear()
                 # Após salvar o nome, exibe a nova página
-                self.show_success_page()
+                self.show_success_page(nome)
             else:
                 raise ValueError("Nome não pode ser vazio!")  # Lança um erro se o campo estiver vazio
         except ValueError as e:
@@ -154,8 +166,8 @@ class MyWidget(QtWidgets.QWidget):  # Classe do aplicativo
         self.input.setStyleSheet("color: black")
         self.button_save.setStyleSheet("color: black")
 
-    def show_success_page(self):
-        self.success_page = SuPage()
+    def show_success_page(self, nome):
+        self.success_page = SuPage(nome)  # Passar o nome para a página de sucesso
         self.success_page.resize(600, 600)
         self.success_page.show()
         self.close()  # Fecha a janela atual
