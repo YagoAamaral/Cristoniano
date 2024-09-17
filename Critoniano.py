@@ -17,11 +17,13 @@ except ImportError:
 class SuPage(QtWidgets.QWidget):  # Nova página
     def __init__(self, nome):  # Aceitar o nome como parâmetro
         super().__init__()
-        self.label = QtWidgets.QLabel(f"Nome '{nome}' salvo com sucesso!", alignment=QtCore.Qt.AlignCenter)
+        self.label = QtWidgets.QLabel(f"Bem vindo!", alignment=QtCore.Qt.AlignCenter)
         self.label.setStyleSheet("font-size: 30px; font-weight: bold; color: black;")
         self.setStyleSheet("background-color: white;")
         layout = QtWidgets.QVBoxLayout(self)
         layout.addWidget(self.label)
+        self.butão = QtWidgets.QPushButton("Vamos ver a palavra de Deus? ")
+        
 
         # Botão de notificação
         self.notify_button = QtWidgets.QPushButton("Mostrar notificação")
@@ -62,8 +64,11 @@ class MyWidget(QtWidgets.QWidget):  # Classe do aplicativo principal
         self.button.setStyleSheet("color: black;")
         self.next.setStyleSheet("color: black")
         self.setStyleSheet("background-color: white;")
+        self.butão.setStyleSheet("color: black")
 
         # Layout
+        
+        self.layout.addWidget(self.butão)
         self.layout = QtWidgets.QVBoxLayout(self)
         self.layout.addWidget(self.text)
         self.layout.addWidget(self.button)
